@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Learning </title>
+    <link rel = "stylesheet" type = "text/css" href = "../static/nav.css" />
+    <link rel = "stylesheet" type = "text/css" href = "../static/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    
+    <header>
+        <nav>  
+            <label class="title-menu"> Menu :  </label>
+
+            <div id="nav-item">
+                <label> Seleccione su Archivo</label>
+                <form>
+                    <select name="File Analisis">
+                        {% for a  in myList %}
+                        <option value="mensajes" selected> {{ a }} </option>
+                        {% endfor %}
+                    </select>
+                </form>
+                <button onclick="" class="menu-item-btn">Load Data </button>
+            </div>
+
+            <div id="nav-item">
+                <label>X: </label>
+                <form>
+                    <select class="it-option" name="xAxys" >
+                        <option  value="Poblacion">Double Chocolate</option>
+                    </select>
+                </form>
+            </div>
+            <div id="nav-item">
+                <label> Y: </label>
+                <form>
+                    <select  class="it-option" name="yAxys">
+                        <option value="Poblacion">Double Chocolate</option>
+                    </select>
+                </form>
+
+            </div>
+            <div id="nav-item">
+                <label id="item-vert"> Valor de Predicción</label>
+                <input name="prediction" id="prediction">
+            </div>
+            <div id="nav-item">
+                <button onclick="" id="ejecutar"> Analizar </button>
+            </div>
+        </nav>
+    </header> 
+    <br>
+    <div class="special-textarea"> 
+        <div class="inputsArea">
+            <label class="tag-section"> Area de Grafica </label>
+            <br>    
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="console">
+            <section>
+                <div class="block-console">
+                    <label class="tag-section"> Resultado Predicción</label>
+                    <textarea disabled id="predict-output" placeholder="Espere su resultado "></textarea>
+                </di>
+            </section>    
+        </div>
+    </div>
+
+
+    <script>
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
+      
+       
+      
+       
+    <footer> 
+        <div class="footer-left">
+            <p> Github : @widjos </p>
+            <p> OLC2 &copy 2023  </p>
+        </div>    
+    </footer>
+</body>
+    
+</html>
