@@ -1,4 +1,4 @@
-﻿cellphone_id,brand,model,operating system,internal memory,RAM,performance,main camera,selfie camera,battery size,screen size,weight,price,release date
+﻿cellphone_id,brand,model,operating_system,internal_memory,RAM,performance,main_camera,selfie_camera,battery_size,screen_size,weight,price,release_date
 0,Apple,iPhone SE (2022),iOS,128,4,7.23,12,7,2018,4.7,144,429,18/03/2022
 1,Apple,iPhone 13 Mini,iOS,128,4,7.72,12,12,2438,5.4,141,699,24/09/2021
 2,Apple,iPhone 13,iOS,128,4,7.75,12,12,3240,6.1,174,699,24/09/2021

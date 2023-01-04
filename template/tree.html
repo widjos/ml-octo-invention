@@ -28,40 +28,19 @@
                 </form>        
             </div>
 
-            <form  action="/result-analysis"  method="POST">
+            <form  action="/result-arbol"  method="POST">
             <div id="nav-item">
                
-                <label>X: </label>
-                
-                    <select class="it-option" name="xAxys" >
-                        {% if xColumn != None %}
-                            {% for a in xColumn %}
-                                <option  value={{a}} selected>{{a}}</option>
-                            {%  endfor %}
-                        {% else %}
-                                <option  value='Cargue X'></option>
-                        {% endif %}        
-                    </select>
-                    
-                
+                <label>Radius </label>
+                <input name="xAxys" id="prediction">  
             </div>
             <div id="nav-item">
-                <label> Y: </label>
-          
-                    <select  class="it-option" name="yAxys">
-                        {% if yColumn != None %}
-                            {% for a in yColumn%}
-                                <option value={{a}}>{{a}}</option>
-                            {% endfor%}
-                        {% else %}
-                                <option value='Cargue Y'></option>
-                        {% endif%}        
-                    </select>
-                
+              <label> Perimeter </label>
+              <input name="yAxys" id="prediction">  
 
             </div>
             <div id="nav-item">
-                <label id="item-vert"> Valor de Predicción</label>
+                <label id="item-vert"> Area</label>
                 <input name="prediction" id="prediction">
             </div>
             {% if nameLabel != '' or nameLabel != None  %}

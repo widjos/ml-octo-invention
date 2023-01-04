@@ -18,6 +18,13 @@ class Functions():
 
     def __init__(self) -> None:
         self.paths = ['.\data\Cellphones data.csv', '..\data\CancerBreast.csv', '..\data\Best_movies_netflix.csv', '..\data\heart.csv', '..\data\WineQt.csv' ]
+        self.imgPath = {
+            'Cellphones': 'img/gaussian.png',
+            'CancerBreast': 'img/tree-model.png',
+            'NetflixMovies': '',
+            'Heart': 'img/linear.png',
+            'WineQT': 'img/polinomial.png'
+        }
         self.paths2 = {
             'Cellphones': '.\data\Cellphones data.csv',
             'CancerBreast': '.\data\CancerBreast.csv',
@@ -43,6 +50,9 @@ class Functions():
         loadData = True
         return columnas
 
+    def getImage(self, fileName):
+        return self.imgPath[fileName]    
+
     #Lineal
     def lineal(self,xAxis , yAxis, data, valuePredict):
 
@@ -59,11 +69,11 @@ class Functions():
         plt.ylabel(yAxis)
         plt.plot(x,y_pred,color ="r", linewidth=3)
 
-        plt.savefig('..\\static\\img\\linear.png')
+        plt.savefig('.\\static\\img\\linear.png')
 
         rmse = np.sqrt(mean_squared_error(y, y_pred))
         r2 = r2_score(y,y_pred)
-        prediction = rreg.predict(np.array([[valuePredict]]))[0]
+        prediction = rreg.predict(np.array([[int(valuePredict)]]))[0]
         
         #Preparation for output
         temp = f'rmse: {rmse}\n'
@@ -85,13 +95,13 @@ class Functions():
         plt.plot(x,y_pred,color='g')
         plt.xlabel(xAxis)
         plt.ylabel(yAxis)
-        plt.savefig('..\\static\\img\\polinomial.png')
+        plt.savefig('.\\static\\img\\polinomial.png')
         
         rmse = np.sqrt(mean_squared_error(y,y_pred))
         r2 = r2_score(y,y_pred)
         
     
-        modPre = model.predict([[prediction,0.85]])
+        modPre = model.predict([[float(prediction),0.85]])
         
         #Output 
         temp = f'RMSE: {rmse}\n'
@@ -108,15 +118,15 @@ class Functions():
         clf.fit(X,Y)
         # x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.33,random_state=17)
         #Testing
-        vPred = clf.predict([[predict]]) 
+        vPred = clf.predict([[int(predict)]]) 
         plt.plot(X,Y)
-        plt.savefig('..\\static\\img\\gaussian.png')
+        plt.savefig('.\\static\\img\\gaussian.png')
         
         return f'Predict para {predict}: {vPred} \n SCORE: {clf.score(X,Y)}'  
 
 
     #Modelo del Arbol
-    def Three(self, dataset):
+    def Three(self, dataset, radMed, perMean, areaMean):
         
         #Para cargar todas las columnas del data set
         #var_column = [c for c in dataset.columns if c not in ['id','diagnosis']]
@@ -148,22 +158,67 @@ class Functions():
            rounded = True,
            filled = True)
 
-        plt.savefig('..\\static\\img\\tree-model.png')
+        plt.savefig('.\\static\\img\\tree-model.png')
 
         #Se obtiene los datos de
         predictions = clf.predict(X_valid)
         
         #print(accuracy_score(y_valid,predictions))
 
-        pred = clf.predict([(11.5,12.5,14)])
+        pred = clf.predict([(float(radMed),float(perMean), float(areaMean))])
         temp = f'Acuraccy : {accuracy_score(y_valid,predictions)}\n'
         temp += f'Prediction : {pred}'
 
         return temp
 
 
+    def ThreePrueba(self, dataset, radMed, perMean, areaMean):
+        
+        #Para cargar todas las columnas del data set
+        #var_column = [c for c in dataset.columns if c not in ['id','diagnosis']]
+      
+        #X = dataset.loc[:,var_column]
+        X = pd.DataFrame({
+            'radMean': dataset['radius_mean'],
+            'perMean': dataset['perimeter_mean'],
+            'areaMean' : dataset['area_mean']   
+        })
+        
+        y = dataset.loc[:,'diagnosis']
+
+        #Split de data in test and validator 
+        X_train , X_valid , y_train, y_valid = train_test_split(X,y, test_size=0.2, random_state=42)
+
+        #Model
+        clf = DecisionTreeClassifier(max_leaf_nodes=5, class_weight='balanced')
+        clf.fit(X_train,y_train)
+    
+
+        #Create figure 
+        plt.figure(figsize=(10,8))
+        #Create the tree plot
+
+        plot_tree(clf,
+           feature_names = ['radMean','perMean','areaMean'], #Feature names
+           class_names = ["B","M"], #Class names
+           rounded = True,
+           filled = True)
+
+        plt.savefig('.\\static\\img\\tree-model.png')
+
+        #Se obtiene los datos de
+        predictions = clf.predict(X_valid)
+        
+        #print(accuracy_score(y_valid,predictions))
+
+        pred = clf.predict([(float(radMed),float(perMean), float(areaMean))])
+        temp = f'Acuraccy : {accuracy_score(y_valid,predictions)}\n'
+        temp += f'Prediction : {pred}'
+
+        return temp
+
     #Peliculas utiliza  el genero 
-    def MdModel(self,data):
+    def MdModel(self,data, year,score,vot,prod):
         #Conver label into number 
         lb_genere = LabelEncoder()
         lb_contry = LabelEncoder()
@@ -194,14 +249,32 @@ class Functions():
         model.fit(X,Y)
 
         x_predict = pd.DataFrame({
-            'year': [2015],
-            'score': [8.1],
-            'votes' : [20595],
-            'production':  [5] 
+            'year': [int(year)],
+            'score': [float(score)],
+            'votes' : [int(vot)],
+            'production':  [int(prod)] 
         })
 
         #Pediccion 
-        print("Preiccion : ", model.predict(x_predict))
+        return f'"Prediccion : ", {model.predict(x_predict)}'
+
+
+    def selectFunction(self,fileName, xAxis, yAxis, prediction, prod='') -> str:
+
+        if not self.data.empty:
+            if fileName == 'Cellphones':
+                return  self.GaussianNB(xAxis,yAxis, self.data, prediction)
+            elif fileName == 'CancerBreast':
+                #return self.Three(self.data)
+                return self.Three(self.data,xAxis, yAxis, prediction)
+            elif fileName == 'Heart':
+                return self.lineal(xAxis, yAxis, self.data,prediction)
+            elif fileName == 'WineQT':
+                return self.polinomial(xAxis,yAxis,self.data,prediction)
+            elif fileName == 'NetflixMovies':
+                return self.MdModel(self.data,xAxis,yAxis,prediction,prod)    
+
+
 
 
 a: Functions = Functions()
@@ -211,15 +284,15 @@ a: Functions = Functions()
 #dat = pd.read_csv(paths[2])
 
 
-#b = pd.read_csv(paths[1])
+
 #a.Three(b)
 
 
 #print(b.groupby('diagnosis').size())
 paths = ['..\data\Cellphones data.csv', '..\data\CancerBreast.csv', '..\data\Best_movies_netflix.csv', '..\data\heart.csv', '..\data\WineQt.csv' ] 
-c = pd.read_csv(paths[1])
+#b = pd.read_csv(paths[4])
 #print(a.lineal('chol','sex', c,310))
-#print(a.polinomial('fixed acidity','density',c,6.8))
+#print(a.polinomial('fixed acidity','density',b,6.8))
 #print(a.GaussianNB('screen size','brand',c,4500))
 #print(a.Three(c))
 

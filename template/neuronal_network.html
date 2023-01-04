@@ -28,41 +28,24 @@
                 </form>        
             </div>
 
-            <form  action="/result-analysis"  method="POST">
+            <form  action="/result-nn"  method="POST">
             <div id="nav-item">
                
-                <label>X: </label>
-                
-                    <select class="it-option" name="xAxys" >
-                        {% if xColumn != None %}
-                            {% for a in xColumn %}
-                                <option  value={{a}} selected>{{a}}</option>
-                            {%  endfor %}
-                        {% else %}
-                                <option  value='Cargue X'></option>
-                        {% endif %}        
-                    </select>
-                    
-                
+                <label>year: </label>
+                <input name="xAxys" id="prediction">  
             </div>
             <div id="nav-item">
-                <label> Y: </label>
-          
-                    <select  class="it-option" name="yAxys">
-                        {% if yColumn != None %}
-                            {% for a in yColumn%}
-                                <option value={{a}}>{{a}}</option>
-                            {% endfor%}
-                        {% else %}
-                                <option value='Cargue Y'></option>
-                        {% endif%}        
-                    </select>
-                
+              <label> score: </label>
+              <input name="yAxys" id="prediction">  
 
             </div>
             <div id="nav-item">
-                <label id="item-vert"> Valor de Predicción</label>
-                <input name="prediction" id="prediction">
+                <label id="item-vert"> votes:</label>
+                <input name="votes" id="prediction">
+            </div>
+            <div id="nav-item">
+                <label id="item-vert"> production:</label>
+                <input name="production" id="prediction">
             </div>
             {% if nameLabel != '' or nameLabel != None  %}
                 <div id="nav-item">
@@ -86,7 +69,7 @@
     </header> 
     <br>
     <div class="special-textarea"> 
-        <div class="inputsArea">
+       <!-- <div class="inputsArea">
             <label class="tag-section"> Area de Grafica </label>
             <br>
             {% if imgPath == '' or imgPath == None %}
@@ -94,8 +77,8 @@
             {% else %}
                 <img src="{{ url_for('static', filename=imgPath)}}">    
             {% endif %}
-                <!-- <canvas id="myChart"></canvas> -->
-        </div>
+                
+        </div> -->
 
         <div class="console">
             <section>
