@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Machine Learning </title>
-    <link rel = "stylesheet" type = "text/css" href = "../static/nav.css" />
-    <link rel = "stylesheet" type = "text/css" href = "../static/main.css" />
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename='style/nav.css')}}" />
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename='style/main.css')}}"  />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -18,31 +18,46 @@
 
             <div id="nav-item">
                 <label> Seleccione su Archivo</label>
-                <form>
-                    <select name="File Analisis">
+                <form action="/load-data"  method="POST">
+                    <select name="file-analisis">
                         {% for a  in myList %}
-                        <option value="mensajes" selected> {{ a }} </option>
+                        <option value={{a}} selected> {{ a }} </option>
                         {% endfor %}
                     </select>
-                </form>
-                <button onclick="" class="menu-item-btn">Load Data </button>
+                    <button type="submit" class="menu-item-btn">Load Data </button>
+                </form>        
             </div>
 
+            <form  action="/result-analysis"  method="POST">
             <div id="nav-item">
+               
                 <label>X: </label>
-                <form>
+                
                     <select class="it-option" name="xAxys" >
-                        <option  value="Poblacion">Double Chocolate</option>
+                        {% if xColumn != None %}
+                            {% for a in xColumn %}
+                                <option  value={{a}} selected>{{a}}</option>
+                            {%  endfor %}
+                        {% else %}
+                                <option  value='Cargue X'></option>
+                        {% endif %}        
                     </select>
-                </form>
+                    
+                
             </div>
             <div id="nav-item">
                 <label> Y: </label>
-                <form>
+          
                     <select  class="it-option" name="yAxys">
-                        <option value="Poblacion">Double Chocolate</option>
+                        {% if yColumn != None %}
+                            {% for a in yColumn%}
+                                <option value={{a}}>{{a}}</option>
+                            {% endfor%}
+                        {% else %}
+                                <option value='Cargue Y'></option>
+                        {% endif%}        
                     </select>
-                </form>
+                
 
             </div>
             <div id="nav-item">
@@ -50,23 +65,33 @@
                 <input name="prediction" id="prediction">
             </div>
             <div id="nav-item">
-                <button onclick="" id="ejecutar"> Analizar </button>
+                <button  id="ejecutar"> Analizar </button>
             </div>
+            </form>
         </nav>
     </header> 
     <br>
     <div class="special-textarea"> 
         <div class="inputsArea">
             <label class="tag-section"> Area de Grafica </label>
-            <br>    
-            <canvas id="myChart"></canvas>
+            <br>
+            {% if imgPath == '' or imgPath == None %}
+                <div></div>
+            {% else %}
+                <img src="{{ url_for('static', filename=imgPath)}}">    
+            {% endif %}
+                <!-- <canvas id="myChart"></canvas> -->
         </div>
 
         <div class="console">
             <section>
                 <div class="block-console">
                     <label class="tag-section"> Resultado Predicción</label>
-                    <textarea disabled id="predict-output" placeholder="Espere su resultado "></textarea>
+                    {% if outputValue == None %}
+                        <textarea disabled id="predict-output" placeholder="Espere su resultado "></textarea>
+                    {% else %}
+                        <textarea disabled id="predict-output" placeholder="Espere su resultado " >{{outputValue}}</textarea>      
+                    {% endif %}
                 </di>
             </section>    
         </div>
