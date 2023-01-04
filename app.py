@@ -78,7 +78,7 @@ def loadNN():
 def loadData():
     fileName = request.form.get('file-analisis')
     currentFile = [fileName] 
-    columnsData =  functMl.LoadData(fileName=fileName)
+    columnsData =  functMl.LoadData(fileName=str(fileName))
     pageName = 'index.html'
     if fileName == 'CancerBreast':
         pageName = 'tree.html'
@@ -98,4 +98,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(port=4200,debug=True)
+    app.run(debug=True)

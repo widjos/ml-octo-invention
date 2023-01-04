@@ -26,11 +26,11 @@ class Functions():
             'WineQT': 'img/polinomial.png'
         }
         self.paths2 = {
-            'Cellphones': '.\data\Cellphones data.csv',
-            'CancerBreast': '.\data\CancerBreast.csv',
-            'NetflixMovies': '.\data\Best_movies_netflix.csv',
-            'Heart': '.\data\heart.csv',
-            'WineQT': '.\data\WineQt.csv'
+            'Cellphones': './data/Cellphones_data.csv',
+            'CancerBreast': './data/CancerBreast.csv',
+            'NetflixMovies': './data/Best_movies_netflix.csv',
+            'Heart': './data/heart.csv',
+            'WineQT': './data/Wine_qt.csv'
         }
         self.data = []
         self.loadData = False
@@ -69,7 +69,7 @@ class Functions():
         plt.ylabel(yAxis)
         plt.plot(x,y_pred,color ="r", linewidth=3)
 
-        plt.savefig('.\\static\\img\\linear.png')
+        plt.savefig('./static/img/linear.png')
 
         rmse = np.sqrt(mean_squared_error(y, y_pred))
         r2 = r2_score(y,y_pred)
@@ -95,7 +95,7 @@ class Functions():
         plt.plot(x,y_pred,color='g')
         plt.xlabel(xAxis)
         plt.ylabel(yAxis)
-        plt.savefig('.\\static\\img\\polinomial.png')
+        plt.savefig('./static/img/polinomial.png')
         
         rmse = np.sqrt(mean_squared_error(y,y_pred))
         r2 = r2_score(y,y_pred)
@@ -120,7 +120,7 @@ class Functions():
         #Testing
         vPred = clf.predict([[int(predict)]]) 
         plt.plot(X,Y)
-        plt.savefig('.\\static\\img\\gaussian.png')
+        plt.savefig('./static/img/gaussian.png')
         
         return f'Predict para {predict}: {vPred} \n SCORE: {clf.score(X,Y)}'  
 
@@ -158,7 +158,7 @@ class Functions():
            rounded = True,
            filled = True)
 
-        plt.savefig('.\\static\\img\\tree-model.png')
+        plt.savefig('./static/img/tree-model.png')
 
         #Se obtiene los datos de
         predictions = clf.predict(X_valid)
@@ -172,50 +172,7 @@ class Functions():
         return temp
 
 
-    def ThreePrueba(self, dataset, radMed, perMean, areaMean):
-        
-        #Para cargar todas las columnas del data set
-        #var_column = [c for c in dataset.columns if c not in ['id','diagnosis']]
-      
-        #X = dataset.loc[:,var_column]
-        X = pd.DataFrame({
-            'radMean': dataset['radius_mean'],
-            'perMean': dataset['perimeter_mean'],
-            'areaMean' : dataset['area_mean']   
-        })
-        
-        y = dataset.loc[:,'diagnosis']
 
-        #Split de data in test and validator 
-        X_train , X_valid , y_train, y_valid = train_test_split(X,y, test_size=0.2, random_state=42)
-
-        #Model
-        clf = DecisionTreeClassifier(max_leaf_nodes=5, class_weight='balanced')
-        clf.fit(X_train,y_train)
-    
-
-        #Create figure 
-        plt.figure(figsize=(10,8))
-        #Create the tree plot
-
-        plot_tree(clf,
-           feature_names = ['radMean','perMean','areaMean'], #Feature names
-           class_names = ["B","M"], #Class names
-           rounded = True,
-           filled = True)
-
-        plt.savefig('.\\static\\img\\tree-model.png')
-
-        #Se obtiene los datos de
-        predictions = clf.predict(X_valid)
-        
-        #print(accuracy_score(y_valid,predictions))
-
-        pred = clf.predict([(float(radMed),float(perMean), float(areaMean))])
-        temp = f'Acuraccy : {accuracy_score(y_valid,predictions)}\n'
-        temp += f'Prediction : {pred}'
-
-        return temp
 
     #Peliculas utiliza  el genero 
     def MdModel(self,data, year,score,vot,prod):

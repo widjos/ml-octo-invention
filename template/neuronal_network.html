@@ -19,7 +19,7 @@
             <div id="nav-item">
                 <label> Seleccione su Archivo</label>
                 <form action="/load-data"  method="POST">
-                    <select name="file-analisis">
+                    <select class="list-one" name="file-analisis">
                         {% for a  in myList %}
                         <option value={{a}} selected> {{ a }} </option>
                         {% endfor %}
